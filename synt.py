@@ -17,20 +17,20 @@ from natlog.prolog_parser import parse_prolog_clause, parse_goal, VarNum
 
 def fact_prompter(quest: str) -> str:
     return f"""
-I am counting on and fully trusting your very high intelligence and linguistic skill. 
-Here is our intellectual exercise: 
-    Each time I will ask a question, your answers will be all just a list of 
+I am counting on and fully trusting your very high intelligence and linguistic skill.
+Here is our intellectual exercise:
+    Each time I will ask a question, your answers will be all just a list of
     Subject,Verb,Object triplets,
-    expressed as Prolog fact of the form: 
-    
-    fact(subject,verb,object). 
-    
+    expressed as Prolog fact of the form:
+
+    fact(subject,verb,object).
+
     No additional text or explanation, just the facts themselves, please!
 
     Here is my question: "{quest}"
 
     Please use "_" instead of spaces or camel-code in multi-word phrases!
-    Please put all constants between single quotes, there should be 
+    Please put all constants between single quotes, there should be
     no capitalized variables in the facts!
     Please make sure your answers are syntactically correct Prolog terms!
 """.strip()
@@ -38,14 +38,14 @@ Here is our intellectual exercise:
 
 def query_prompter(quest: str, facts: str) -> str:
     return f"""
-I am counting on and fully trusting your very high intelligence and linguistic skill. 
-Here is our intellectual exercise: 
+I am counting on and fully trusting your very high intelligence and linguistic skill.
+Here is our intellectual exercise:
 You will convert the content of a question into a set of one or more Prolog goals of the form:
 
     fact(subject1,verb1,object1),fact(subject2,verb2,object2),...
-     
+
     When a question requires ans answer in its subject or object part, you will use a variable, e.g., X or Y.
-    For instance, a question like "Who is the president of the USA?" will be converted to:  
+    For instance, a question like "Who is the president of the USA?" will be converted to:
 
     fact(X, is, president_of_usa).
 
@@ -67,18 +67,18 @@ You will convert the content of a question into a set of one or more Prolog goal
 
 def sum_prompter(facts: str) -> str:
     return f"""
-I am counting on and fully trusting your very high intelligence and reasoning skills. 
-Here is our intellectual exercise: 
+I am counting on and fully trusting your very high intelligence and reasoning skills.
+Here is our intellectual exercise:
 I will send you a set of Prolog facts, each of the form:
 
-    fact(Subject,Verb,Object). 
+    fact(Subject,Verb,Object).
 
     Please summarize them in a few plain sentences,
     without any additional text or explanation, just the summary itself!
 
 Here are the facts:
 
-{facts} 
+{facts}
 """.strip()
 
 
@@ -88,7 +88,7 @@ The topic I have started thinking about is {quest0}.
 
 Here is a summary about the thoughts I am interested to explore in depth:
 
-{sum}   
+{sum}
 
 What short, salient question should I ask about it? Please make sure it is a genuine
 follow-up question, that is not a rephrasing of the previous one! Also, try to make
@@ -103,16 +103,16 @@ def gen_prompter(nouns: str, context: str) -> str:
     return f"""
 I will send you a set of Prolog nouns separated by semicolons (;)
 that you will need to generalize by creating S,V,O triplets
-like 
+like
 
-   (noun, is_a_kind_of, more_general_concept) or 
+   (noun, is_a_kind_of, more_general_concept) or
    (noun, is_a_part_of, container_concept) or
    (noun, is_an_analog_of, well_known_concept) or
    (noun, is_a_consequence_of, known_cause) or
    (noun, can_lead_to, possible_consequence) or
    (noun, is_a_reason_for, well_known_effect)
    and so on.
-   
+
 You will work with the following context in mind, describing what
 theee nouns are about:
 
@@ -120,14 +120,14 @@ theee nouns are about:
 
 Here are the nouns:
 
-{nouns} 
+{nouns}
 
 you will work with.
 
 Please return a list of Prolog facts of the form:
-   
+
    fact(subject,verb,object)
- 
+
 for each such triplet you can think of.
 
 Please use "_" instead of spaces or camel-code in multi-word phrases!
@@ -413,8 +413,8 @@ def rank_svos(svos, topn, redirect=None):
         g.add_edge(s, o, weight=weight)
     rs = nx.pagerank(g.reverse())
     ranked = sorted(
-        svos, key=lambda x: rs.get(x[0], 0) + rs.get(x[2], 0), reverse=True
-    )  # REVERSE IS BETTER!!!
+        svos, key=lambda x: rs.get(x[0], 0) + rs.get(x[1], 0), reverse=True
+    )
     if topn <= 0:
         return ranked
 
